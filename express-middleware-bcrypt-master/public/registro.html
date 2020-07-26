@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- creamos dos campos de texto y un botón para hacer el registro de usuario -->
+    <input type="text" id="username">
+    <input type="text" id="password">
+    <button onclick="registro()">Click</button>
+
+    <script>
+        //definimos la función
+        function registro(){
+            //recogemos los valores introducidos y creamos un objeto con ellos
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            let user = {username, password}
+
+            //enviamos al servidor el objeto user
+            fetch('/registro',{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(user)
+            }).then(function(respuesta){
+                return respuesta.json()
+            }).then(function(info){
+                console.log(info)
+            })
+        }
+    </script>
+</body>
+</html>

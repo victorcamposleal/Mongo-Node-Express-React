@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //nada más cargar la página accedemos al valor almacenado en sessionStorage
+        let token = sessionStorage.getItem('token');
+        //si no tiene valor, le damos un valor por defecto
+        if (token === null) {
+            token = 'null'
+        }
+        //mandamos al servidor el token a la ruta definida
+        fetch(`/home?token=${token}`)
+            .then(function (respuesta) {
+                return respuesta.json()
+            }).then(function (info) {
+                //mostramos el mensaje que nos devuelve el servidor. puede ser bienvenido o puede que nos diga que no tenemos acceso
+                window.alert(info.mensaje);
+            })
+
+    </script>
+</body>
+
+</html>

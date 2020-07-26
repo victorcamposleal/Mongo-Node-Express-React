@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- creamos dos campos de texto y un botón para hacer el inicio de sesión -->
+    <input type="text" id="username">
+    <input type="text" id="password">
+    <button onclick="login()">Click</button>
+
+    <script>
+        //creamos la función
+        function login() {
+            //recogemos los valores introducidos y creamos un objeto con ellos
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            let user = { username, password }
+
+            //enviamos al servidor el objeto user
+            fetch('/login', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(user)
+            }).then(function (respuesta) {
+                return respuesta.json()
+            }).then(function (info) {
+                //aquí recibimos la información que nos envía el servidor. nos llega un objeto con las siguientes propiedades: { mensaje, ok, token }
+                //si nos llega la propiedad ok con valor true
+                if (info.ok) {
+                    //guardamos en sessionStorage el token que hemos generado en el servidor y nos llega con el objeto. este token que guardamos en sessionStorage lo usaremos para comprobar si el usuario está logueado y si tiene autorización para acceder a diferentes páginas
+                    sessionStorage.setItem('token', info.token);
+                    //cambiamos la página a index.html
+                    window.location = '/index.html'
+                } 
+                //si la propiedad ok nos llega con valor false, guardamos un valor por defecto en sessionStorage
+                else {
+                    sessionStorage.setItem('token', null);
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
